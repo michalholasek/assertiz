@@ -1,0 +1,29 @@
+{
+  "bitwise": true,
+  "browser": true,
+  "camelcase": true,
+  "curly": false,
+  "eqeqeq": true,
+  "forin": true,
+  "freeze": true,
+  "globals": {
+    "isArray": true,
+    "isFunction": true,
+    "isString": true,
+    "module": true,
+    "require": true
+  },
+  "immed": true,
+  "indent": 2,
+  "latedef": true,
+  "maxerr": 10,
+  "maxlen": 80,
+  "newcap": true,
+  "nonew": true,
+  "plusplus": false,
+  "quotmark": "single",
+  "strict": true,
+  "trailing": true,
+  "undef": true,
+  "unused": true
+}
