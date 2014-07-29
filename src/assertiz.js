@@ -81,21 +81,23 @@
         }, timeout);
 
       test.fn(function done() {
-        if (!test.canceled && !assert.error) {
-          clearTimeout(timer);
+        if (test.canceled) { return; }
 
-          test.duration = Date.now() - start;
+        clearTimeout(timer);
+
+        test.duration = Date.now() - start;
+
+        if (!assert.error) {
           test.passed = true;
 
           onFinished(test);
-        } else if (assert.error) {
-          clearTimeout(timer);
 
-          test.duration = Date.now() - start;
+        } else {
           test.passed = false;
           test.error = assert.error;
 
           assert.clear();
+
           onError(test);
         }
       });
