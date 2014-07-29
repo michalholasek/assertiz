@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var test = require('interface-tdd').test;
+  var test = require('assertiz').test;
   var assert = require('assert');
   var message = '';
 

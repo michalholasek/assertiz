@@ -1,5 +1,6 @@
 (function () {
   'use strict';
 
-  require('assertiz').run();
+  var assertiz = require('assertiz');
+  assertiz.run();
 }());
