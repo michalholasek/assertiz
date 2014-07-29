@@ -24,6 +24,26 @@
       }
     };
 
+    assert.throws = function (fn, comparer) {
+      if (!isFunction(fn)) {
+        assert.error = new Error('input fn is not a function');
+        return;
+      }
+
+      try {
+        fn();
+        assert.error = new Error('input fn does not throw an error');
+      } catch (err) {
+        if (comparer && !isFunction(comparer)) {
+          assert.error = new Error('comparer is not a function');
+          return;
+        }
+        if (comparer && !comparer(err)) {
+          assert.error = new Error('comparer function did not return true');
+        }
+      }
+    };
+
     assert.true = function (value) {
       if (typeof value !== 'boolean') {
         assert.error = new Error('input value is not valid');
