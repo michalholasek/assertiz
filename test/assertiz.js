@@ -5,28 +5,6 @@
   var assert = require('assert');
   var message = '';
 
-  test('test should throw an error when input name is not valid', function () {
-    assert.throws(function () {
-      test();
-    });
-  });
-
-  test('test should throw an error when callback argument is not a function',
-    function () {
-      assert.throws(function () {
-        test('test name', {});
-      });
-    }
-  );
-
-  test('test should throw an error when async argument is not a boolean',
-    function () {
-      assert.throws(function () {
-        test('test name', function () {}, {});
-      });
-    }
-  );
-
   test('assertiz#run should be able to run sync test', function () {
     assert.true(true);
   });

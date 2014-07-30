@@ -54,10 +54,8 @@
   test('assert~throws should set assert~error when input fn is not a function',
     function () {
       assert.throws({});
-
       message = assert.error.message;
       assert.clear();
-
       assert.equal(message, 'fn is not a function');
     }
   );
@@ -66,10 +64,8 @@
        'not throw an error',
     function () {
       assert.throws(function () {});
-
       message = assert.error.message;
       assert.clear();
-
       assert.equal(message, 'function did not threw an error');
     }
   );
@@ -81,12 +77,10 @@
         function () {
           throw new Error('actual error message');
         },
-        function () {
-      });
-
+        function () {}
+      );
       message = assert.error.message;
       assert.clear();
-
       assert.equal(message, 'comparer function did not return true');
     }
   );

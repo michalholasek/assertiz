@@ -126,20 +126,14 @@
     //----------------------------------------------------------------------
 
     module.$name = 'assertiz';
-    
     module.exports = (function () {
       
       var test = function (name, fn, async) {
-        if (!name || !isString(name)) {
-          throw new Error('invalid test name');
+        // Push only valid test
+        if (!isString(name) || !isFunction(fn) ||
+           (async && typeof async !== 'boolean')) {
+          return;
         }
-        if (!fn || !isFunction(fn)) {
-          throw new Error('test callback is not a function');
-        }
-        if (async && typeof async !== 'boolean') {
-          throw new Error('value of async is not boolean');
-        }
-
         addTest(new Test(name, fn, async));
       };
 
