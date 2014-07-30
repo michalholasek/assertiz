@@ -10,7 +10,7 @@
       assert.true('');
       message = assert.error.message;
       assert.clear();
-      assert.equal(message, 'input value is not valid');
+      assert.equal(message, 'value is not true');
     }
   );
 
@@ -26,24 +26,6 @@
   test('assert~true should pass when input value is true',
     function () {
       assert.true(true);
-    }
-  );
-
-  test('assert~equal should set assert~error when given invalid actual value',
-    function () {
-      assert.equal(undefined);
-      message = assert.error.message;
-      assert.clear();
-      assert.equal(message, 'actual value is undefined');
-    }
-  );
-
-  test('assert~equal should set assert~error when given invalid expected value',
-    function () {
-      assert.equal('');
-      message = assert.error.message;
-      assert.clear();
-      assert.equal(message, 'expected value is undefined');
     }
   );
 
@@ -76,7 +58,7 @@
       message = assert.error.message;
       assert.clear();
 
-      assert.equal(message, 'input fn is not a function');
+      assert.equal(message, 'fn is not a function');
     }
   );
 
@@ -88,7 +70,7 @@
       message = assert.error.message;
       assert.clear();
 
-      assert.equal(message, 'input fn does not throw an error');
+      assert.equal(message, 'function did not threw an error');
     }
   );
 

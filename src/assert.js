@@ -3,6 +3,16 @@
 
   module(function () {
     var assert = {};
+    var fail;
+
+    var messages = {
+      comparer: 'comparer function did not return true',
+      not: {
+        true: 'value is not true',
+        fn: 'fn is not a function',
+        threw: 'function did not threw an error'
+      }
+    };
 
     assert.clear = function () {
       if (assert.error) {
@@ -11,47 +21,35 @@
     };
 
     assert.equal = function (actual, expected) {
-      if (typeof actual === 'undefined') {
-        assert.error = new Error('actual value is undefined');
-        return;
-      }
-      if (typeof expected === 'undefined') {
-        assert.error = new Error('expected value is undefined');
-        return;
-      }
       if (actual !== expected) {
-        assert.error = new Error(actual + ' is not equal to ' + expected);
+        fail(actual + ' is not equal to ' + expected);
       }
     };
 
     assert.throws = function (fn, comparer) {
-      if (!isFunction(fn)) {
-        assert.error = new Error('input fn is not a function');
-        return;
-      }
-
       try {
-        fn();
-        assert.error = new Error('input fn does not throw an error');
-      } catch (err) {
-        if (comparer && !isFunction(comparer)) {
-          assert.error = new Error('comparer is not a function');
-          return;
+        if (!isFunction(fn)) {
+          fail(messages.not.fn);
+        } else {
+          fn();
+          fail(messages.not.threw);
         }
-        if (comparer && !comparer(err)) {
-          assert.error = new Error('comparer function did not return true');
+      } catch (err) {
+        if (isFunction(comparer) && !comparer(err)) {
+          fail(messages.comparer);
         }
       }
     };
 
     assert.true = function (value) {
-      if (typeof value !== 'boolean') {
-        assert.error = new Error('input value is not valid');
-        return;
+      if (typeof value !== 'boolean' || !value) {
+        fail(messages.not.true);
       }
-      if (!value) {
-        assert.error = new Error('value is not true');
-      }
+    };
+
+    fail = function (message) {
+      assert.error = new Error(message);
+      return;
     };
 
     module.$name = 'assert';

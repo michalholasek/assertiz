@@ -36,7 +36,6 @@
       assert.true(true);
       done();
     }, 100);
-    
   }, true);
 
   test('assertiz#run should be able to handle failed sync test', function () {

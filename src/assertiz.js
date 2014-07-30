@@ -131,13 +131,13 @@
       
       var test = function (name, fn, async) {
         if (!name || !isString(name)) {
-          throw new Error('test name is not valid');
+          throw new Error('invalid test name');
         }
         if (!fn || !isFunction(fn)) {
-          throw new Error('test callback is not valid');
+          throw new Error('test callback is not a function');
         }
         if (async && typeof async !== 'boolean') {
-          throw new Error('value of async is not valid');
+          throw new Error('value of async is not boolean');
         }
 
         addTest(new Test(name, fn, async));
