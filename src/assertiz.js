@@ -3,16 +3,20 @@
 
   module(function () {
     var assert = require('assert');
+    var listenerId = -1;
+    var listeners = {};
     var paused = false;
     var onFinished;
     var queue = [];
+    var assertiz;
     var runAsync;
     var addTest;
     var onError;
     var runSync;
+    var runTest;
+    var emit;
     var next;
     var Test;
-    var run;
 
     //----------------------------------------------------------------------
     // Runner
@@ -22,24 +26,30 @@
       queue.push(test);
     };
 
+    emit = function (event, test) {
+      if (!listeners[event]) return;
+
+      for (var i = 0; i < listeners[event].length; i++) {
+        listeners[event][i].fn(test);
+      }
+    };
+
     onError = function (test) {
-      // Publish 'test-error'
-      console.log(test);
+      emit('test-error', test);
       next();
     };
 
     onFinished = function (test) {
-      // Publish 'test-finished'
-      console.log(test);
+      emit('test-finished', test);
       next();
     };
 
     next = function () {
       paused = false;
-      setTimeout(run, 1);
+      setTimeout(assertiz.run, 1);
     };
 
-    run = function () {
+    runTest = function () {
       var test;
 
       if (!paused && queue.length) {
@@ -125,22 +135,57 @@
     // Public Interface
     //----------------------------------------------------------------------
 
-    module.$name = 'assertiz';
-    module.exports = (function () {
+    assertiz = {
+
+      off: function (token) {
+        if (!isString(token)) return;
+
+        for (var event in listeners) {
+          if (listeners[event]) {
+            for (var i = 0; i < listeners[event].length; i++) {
+              if (listeners[event][i].token === token) {
+                listeners[event].splice(i, 1);
+              }
+            }
+          }
+        }
+      },
+
+      on: function (event, fn) {
+        var token = '';
+
+        if (!isString(event) || !isFunction(fn)) return;
+
+        if (!listeners[event]) {
+          listeners[event] = [];
+        }
+
+        token = (++listenerId).toString();
+        listeners[event].push({
+          token: token,
+          fn: fn
+        });
+
+        return token;
+      },
       
-      var test = function (name, fn, async) {
+      run: function () {
+        runTest();
+      },
+
+      test: function (name, fn, async) {
         // Push only valid test
         if (!isString(name) || !isFunction(fn) ||
            (async && typeof async !== 'boolean')) {
           return;
         }
+        
         addTest(new Test(name, fn, async));
-      };
+      }
 
-      return {
-        test: test,
-        run: run
-      };
-    }());
+    };
+
+    module.exports = assertiz;
+    module.exports.name = 'assertiz';
   });
 }());

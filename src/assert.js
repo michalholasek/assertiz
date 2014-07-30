@@ -51,8 +51,8 @@
       assert.error = new Error(message);
       return;
     };
-
-    module.$name = 'assert';
+    
     module.exports = assert;
+    module.exports.name = 'assert';
   });
 }());
