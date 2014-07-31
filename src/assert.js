@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  module(function () {
+  module('assert', function () {
     var assert = {};
     var fail;
 
@@ -52,6 +52,5 @@
     };
     
     module.exports = assert;
-    module.exports.name = 'assert';
   });
 }());

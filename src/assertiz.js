@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  module(function () {
+  module('assertiz', function () {
     var assert = require('assert');
     var listenerId = -1;
     var listeners = {};
@@ -186,6 +186,5 @@
     };
 
     module.exports = assertiz;
-    module.exports.name = 'assertiz';
   });
 }());
