@@ -49,7 +49,6 @@
 
     fail = function (message) {
       assert.error = new Error(message);
-      return;
     };
     
     module.exports = assert;
