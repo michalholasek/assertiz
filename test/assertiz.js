@@ -1,7 +1,8 @@
 (function () {
   'use strict';
 
-  var test = require('assertiz').test;
+  var assertiz = require('assertiz');
+  var test = assertiz.test;
   var assert = require('assert');
   var message = '';
 
@@ -48,4 +49,59 @@
       done(); // Comment this if you uncommented lines above
     }, true
   );
+
+  test('assertiz#on should be able to add event listener on given event',
+    function () {
+      var token = assertiz.on('my-event', function () {});
+      assertiz.off('2');
+      assert.equal(token, '2');
+    }
+  );
+
+  test('assertiz#on should be able to add multiple event listeners on ' +
+       'given event', function () {
+      var token = '';
+
+      assertiz.on('my-event', function () {});
+      token = assertiz.on('my-event', function () {});
+      
+      assertiz.off('2');
+      assertiz.off('3');
+
+      assert.equal(token, '3');
+    }
+  );
+
+  test('assertiz#on should not add event listener if given event name ' +
+       'is not a string', function () {
+      var token = assertiz.on({}, function () {});
+      assert.equal(token, undefined);
+    }
+  );
+
+  test('assertiz#on should not add event listener if given callback ' +
+       'is not a function', function () {
+      var token = assertiz.on('my-event', {});
+      assert.equal(token, undefined);
+    }
+  );
+
+  test('assertiz#off should be able to remove event handler', function () {
+    var token = assertiz.on('my-event', function () {});
+    token = assertiz.off(token);
+    assert.equal(token, '2');
+  });
+
+  test('assertiz#off should not remove event handler if given token ' +
+       'is not a string', function () {
+      var token = assertiz.off({});
+      assert.equal(token, undefined);
+    }
+  );
+
+  test('assertiz#off should return false if there is no event listener ' +
+       'with given token', function () {
+    var token = assertiz.off('1337');
+    assert.equal(token, false);
+  });
 }());

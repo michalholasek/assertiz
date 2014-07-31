@@ -145,10 +145,14 @@
             for (var i = 0; i < listeners[event].length; i++) {
               if (listeners[event][i].token === token) {
                 listeners[event].splice(i, 1);
+                listenerId--;
+                return token;
               }
             }
           }
         }
+
+        return false;
       },
 
       on: function (event, fn) {

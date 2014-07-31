@@ -30,8 +30,7 @@
   );
 
   test('assert~equal should set assert~error when actual and expected ' +
-       'values are not equal',
-    function () {
+       'values are not equal', function () {
       assert.equal(0, 1);
       message = assert.error.message;
       assert.clear();
@@ -61,8 +60,7 @@
   );
 
   test('assert~throws should set assert~error when input fn does ' +
-       'not throw an error',
-    function () {
+       'not throw an error', function () {
       assert.throws(function () {});
       message = assert.error.message;
       assert.clear();
@@ -71,8 +69,7 @@
   );
 
   test('assert~throws should set assert~error when input comparer ' +
-       'function does not return true',
-    function () {
+       'function does not return true', function () {
       assert.throws(
         function () {
           throw new Error('actual error message');
