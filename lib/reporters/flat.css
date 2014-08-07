@@ -1,0 +1,30 @@
+body {
+  font-family: Helvetica;
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  margin: 15px 0 0 0;
+  padding: 0;
+}
+
+li {
+  font-size: 12px;
+  list-style-type: none;
+  padding: 5px 0 5px 31px;
+}
+
+#header {
+  color: #58a3e4;
+  font-size: 45px;
+  margin: 20px 0 0 30px;
+}
+
+.success {
+  background-color: #75c575;
+}
+
+.failure {
+  background-color: #d9534f;
+}
