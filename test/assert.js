@@ -64,7 +64,7 @@
       assert.throws(function () {});
       message = assert.error.message;
       assert.clear();
-      assert.equal(message, 'function did not threw an error');
+      assert.equal(message, 'function did not throw an error');
     }
   );
 
