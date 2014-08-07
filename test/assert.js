@@ -70,12 +70,16 @@
 
   test('assert~throws should set assert~error when input comparer ' +
        'function does not return true', function () {
-      assert.throws(
-        function () {
-          throw new Error('actual error message');
-        },
-        function () {}
-      );
+      var expected;
+      var actual;
+
+      actual = function () {
+        throw new Error('actual error message');
+      };
+
+      expected = function () {};
+      
+      assert.throws(actual, expected);
       message = assert.error.message;
       assert.clear();
       assert.equal(message, 'comparer function did not return true');
@@ -90,16 +94,20 @@
 
   test('assert~throws should pass when comparer function returns true',
     function () {
-      assert.throws(
-        function () {
-          throw new Error('expected error message');
-        },
-        function (err) {
-          if (err.message === 'expected error message') {
-            return true;
-          }
+      var expected;
+      var actual;
+
+      actual = function () {
+        throw new Error('expected error message');
+      };
+
+      expected = function (err) {
+        if (err.message === 'expected error message') {
+          return true;
         }
-      );
+      };
+      
+      assert.throws(actual, expected);
     }
   );
 }());
