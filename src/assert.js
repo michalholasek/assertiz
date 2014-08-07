@@ -5,15 +5,6 @@
     var assert = {};
     var fail;
 
-    var messages = {
-      comparer: 'comparer function did not return true',
-      not: {
-        true: 'value is not true',
-        fn: 'fn is not a function',
-        threw: 'function did not threw an error'
-      }
-    };
-
     assert.clear = function () {
       if (assert.error) {
         delete assert.error;
@@ -29,21 +20,21 @@
     assert.throws = function (fn, comparer) {
       try {
         if (!isFunction(fn)) {
-          fail(messages.not.fn);
+          fail('fn is not a function');
         } else {
           fn();
-          fail(messages.not.threw);
+          fail('function did not throw an error');
         }
       } catch (err) {
         if (isFunction(comparer) && !comparer(err)) {
-          fail(messages.comparer);
+          fail('comparer function did not return true');
         }
       }
     };
 
     assert.true = function (value) {
       if (typeof value !== 'boolean' || !value) {
-        fail(messages.not.true);
+        fail('value is not true');
       }
     };
 
