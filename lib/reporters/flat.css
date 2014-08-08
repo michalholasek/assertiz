@@ -28,3 +28,7 @@ li {
 .failure {
   background-color: #d9534f;
 }
+
+.suite {
+  font-weight: bold;
+}

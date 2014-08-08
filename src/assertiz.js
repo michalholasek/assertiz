@@ -7,6 +7,7 @@
     var listeners = {};
     var paused = false;
     var onFinished;
+    var suite = '';
     var queue = [];
     var assertiz;
     var runAsync;
@@ -62,8 +63,9 @@
     // Test
     //----------------------------------------------------------------------
 
-    Test = function (name, fn, async) {
+    Test = function (suite, name, fn, async) {
       this.async = async || false;
+      this.suite = suite;
       this.name = name;
       this.fn = fn;
     };
@@ -177,6 +179,12 @@
         runTest();
       },
 
+      suite: function (name, fn) {
+        suite = isString(name) ? name : '';
+        fn();
+        suite = '';
+      },
+
       test: function (name, fn, async) {
         // Push only valid test
         if (!isString(name) || !isFunction(fn) ||
@@ -184,7 +192,7 @@
           return;
         }
         
-        addTest(new Test(name, fn, async));
+        addTest(new Test(suite, name, fn, async));
       }
 
     };
