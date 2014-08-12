@@ -8,8 +8,10 @@
   "freeze": true,
   "globals": {
     "isArray": true,
+    "isBoolean": true,
     "isFunction": true,
     "isString": true,
+    "isUndefined": true,
     "module": true,
     "require": true
   },
@@ -19,6 +21,7 @@
   "maxerr": 10,
   "maxlen": 80,
   "newcap": true,
+  "node": true,
   "nonew": true,
   "plusplus": false,
   "quotmark": "single",
