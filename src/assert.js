@@ -13,8 +13,8 @@
 
   assert.equal = function (actual, expected) {
     if (actual !== expected) {
-      fail(actual + ' is not equal to ' + expected)
-;    }
+      fail(actual + ' is not equal to ' + expected);
+    }
   };
 
   assert.throws = function (fn, comparer) {
