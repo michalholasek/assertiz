@@ -1,6 +1,7 @@
 (function () {
   'use strict';
 
+  var util = require('./util.js');
   var assert = {};
   var fail;
 
@@ -12,20 +13,20 @@
 
   assert.equal = function (actual, expected) {
     if (actual !== expected) {
-      fail(actual + ' is not equal to ' + expected);
-    }
+      fail(actual + ' is not equal to ' + expected)
+;    }
   };
 
   assert.throws = function (fn, comparer) {
     try {
-      if (!isFunction(fn)) {
+      if (!util.isFunction(fn)) {
         fail('fn is not a function');
       } else {
         fn();
         fail('function did not throw an error');
       }
     } catch (err) {
-      if (isFunction(comparer) && !comparer(err)) {
+      if (util.isFunction(comparer) && !comparer(err)) {
         fail('comparer function did not return true');
       }
     }
@@ -41,8 +42,8 @@
     assert.error = new Error(message);
   };
   
-  if (!isUndefined(window)) {
-    module.register('assert', assert);
+  if (typeof window !== 'undefined') {
+    module.register('./assert.js', assert);
   } else {
     module.exports = assert;  
   }

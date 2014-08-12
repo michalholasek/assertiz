@@ -1,8 +1,8 @@
 (function () {
   'use strict';
 
-  var assertiz = require('assertiz');
-  var assert = require('assert');
+  var assertiz = require('./assertiz.js');
+  var assert = require('./assert.js');
   var suite = assertiz.suite;
   var test = assertiz.test;
   var message = '';

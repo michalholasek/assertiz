@@ -1,7 +1,8 @@
 (function () {
   'use strict';
 
-  var assert = require('assert');
+  var assert = require('./assert.js');
+  var util = require('./util.js');
   var listenerId = -1;
   var listeners = {};
   var paused = false;
@@ -139,7 +140,7 @@
   assertiz = {
 
     off: function (token) {
-      if (!isString(token)) return;
+      if (!util.isString(token)) return;
 
       for (var event in listeners) {
         if (listeners[event]) {
@@ -159,7 +160,7 @@
     on: function (event, fn) {
       var token = '';
 
-      if (!isString(event) || !isFunction(fn)) return;
+      if (!util.isString(event) || !util.isFunction(fn)) return;
 
       if (!listeners[event]) {
         listeners[event] = [];
@@ -179,14 +180,14 @@
     },
 
     suite: function (name, fn) {
-      suite = isString(name) ? name : '';
+      suite = util.isString(name) ? name : '';
       fn();
       suite = '';
     },
 
     test: function (name, fn, async) {
       // Push only valid test
-      if (!isString(name) || !isFunction(fn) ||
+      if (!util.isString(name) || !util.isFunction(fn) ||
          (async && typeof async !== 'boolean')) {
         return;
       }
@@ -196,8 +197,8 @@
 
   };
 
-  if (!isUndefined(window)) {
-    module.register('assertiz', assertiz);
+  if (typeof window !== 'undefined') {
+    module.register('./assertiz.js', assertiz);
   } else {
     module.exports = assertiz;  
   }
