@@ -1,4 +1,5 @@
 [Bb]in
 [Pp]roperties
 *.csproj
+*.csproj.user
 [Oo]bj
