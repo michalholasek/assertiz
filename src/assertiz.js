@@ -39,12 +39,12 @@
 
     onError = function (test) {
       emit('test-error', test);
-      next();
+      if (queue.length) next();
     };
 
     onFinished = function (test) {
       emit('test-finished', test);
-      next();
+      if (queue.length) next();
     };
 
     next = function () {
@@ -58,6 +58,10 @@
       if (!paused && queue.length) {
         test = queue.shift();
         test.run(onFinished, onError);
+      }
+
+      if (!queue.length) {
+        emit('run-finished');
       }
     };
 

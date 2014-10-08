@@ -14,7 +14,7 @@
   "indent": 2,
   "latedef": true,
   "maxerr": 10,
-  "maxlen": 80,
+  "maxlen": 87,
   "newcap": true,
   "nonew": true,
   "plusplus": false,

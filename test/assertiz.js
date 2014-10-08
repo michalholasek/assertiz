@@ -63,18 +63,18 @@
   suite('assertiz', function () {
     test('on() - event listener for given event', function () {
       token = assertiz.on('my-event', function () {});
-      assertiz.off('2');
-      assert.equal(token, '2');
+      assertiz.off('3');
+      assert.equal(token, '3');
     });
 
     test('on() - multiple event listeners for given event', function () {
       assertiz.on('my-event', function () {});
       token = assertiz.on('my-event', function () {});
       
-      assertiz.off('2');
       assertiz.off('3');
+      assertiz.off('4');
 
-      assert.equal(token, '3');
+      assert.equal(token, '4');
     });
 
     test('on() - event name is not a string', function () {
@@ -92,7 +92,7 @@
     test('off() - remove event handler', function () {
       token = assertiz.on('my-event', function () {});
       token = assertiz.off(token);
-      assert.equal(token, '2');
+      assert.equal(token, '3');
     });
 
     test('off() - token is not a string', function () {
