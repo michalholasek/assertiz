@@ -2,6 +2,7 @@
   'use strict';
 
   module('assert', function () {
+    var isFunction = require('utils').isFunction;
     var assert = {};
     var fail;
 
