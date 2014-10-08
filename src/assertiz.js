@@ -2,6 +2,8 @@
   'use strict';
 
   module('assertiz', function () {
+    var isFunction = require('utils').isFunction;
+    var isString = require('utils').isString;
     var assert = require('assert');
     var listenerId = -1;
     var listeners = {};

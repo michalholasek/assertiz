@@ -7,9 +7,6 @@
   "forin": true,
   "freeze": true,
   "globals": {
-    "isArray": true,
-    "isFunction": true,
-    "isString": true,
     "module": true,
     "require": true
   },
