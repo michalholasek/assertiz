@@ -25,7 +25,27 @@ Simple test runner with TDD like assertion library for the browser.
 <strong>Note:</strong> Build script is written to run on Windows machines. Replace `\\` with `/` in paths to the source files if you want to run it on Linux / Mac OS machines.
 
 ## Interface
+```html
+﻿<!doctype html>
+<html>
+  <head>
+    <title>assertiz</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <link rel="stylesheet" href="assertiz.min.css">
+    <script src="assertiz.min.js"></script>
+
+    <div id="assertiz"></div>
+
+    <script src="tests.js"></script>
+  </body>
+</html>
+```
+
 ```js
+// tests.js
+
 var assertiz = require('assertiz');
 var assert = require('assert');
 var flat = require('flat');
