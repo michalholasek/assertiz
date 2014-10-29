@@ -12,8 +12,17 @@ Simple test runner with TDD like assertion library for the browser.
 
 ## Planned Features
 - More assertions (false, notEqual, deepEqual, notDeepEqual)
-- Build script
 - nodejs support
+
+## Build
+1. Make sure you have [node.js](http://nodejs.org/) installed
+2. `> cd path/to/assertiz`
+3. `> npm install gulp -g`
+4. `> npm install`
+5. `> gulp`
+6. `assertiz.min.css` and `assertiz.min.js` will be placed in the `build` directory
+
+<strong>Note:</strong> Build script is written to run on Windows machines. Replace `\\` with `/` in paths to the source files if you want to run it on Linux / Mac OS machines.
 
 ## Interface
 ```js
