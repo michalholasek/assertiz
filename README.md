@@ -11,7 +11,7 @@ Simple test runner with TDD like assertion library for the browser.
 - Reports test durations
 
 ## Planned Features
-- More assertions (false, notEqual, deepEqual, notDeepEqual)
+- More assertions (deepEqual, notDeepEqual)
 - nodejs support
 
 ## Build
