@@ -3,3 +3,6 @@
 *.csproj
 *.csproj.user
 [Oo]bj
+
+build
+node_modules
