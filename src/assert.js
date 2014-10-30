@@ -25,6 +25,12 @@
       }
     };
 
+    assert.notEqual = function (actual, expected) {
+      if (actual === expected) {
+        fail(actual + ' is equal to ' + expected);
+      }
+    };
+
     assert.throws = function (fn, comparer) {
       try {
         if (!isFunction(fn)) {

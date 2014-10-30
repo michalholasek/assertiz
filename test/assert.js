@@ -75,6 +75,30 @@
   });
 
   suite('assert', function () {
+    test('notEqual() - strings (assertiz) are equal', function () {
+      assert.notEqual('assertiz', 'assertiz');
+      message = assert.error.message;
+      assert.clear();
+      assert.equal(message, 'assertiz is equal to assertiz');
+    });
+
+    test('notEqual() - nulls are equal', function () {
+      assert.notEqual(null, null);
+      message = assert.error.message;
+      assert.clear();
+      assert.equal(message, 'null is equal to null');
+    });
+
+    test('notEqual() - {} are not equal', function () {
+      assert.notEqual({}, {});
+    });
+
+    test('notEqual() - 0 and \'\' are not equal', function () {
+      assert.notEqual(0, '');
+    });
+  });
+
+  suite('assert', function () {
     test('clear() - deletes assert~error property', function () {
       assert.error = new Error('assert~error property set');
       assert.clear();
