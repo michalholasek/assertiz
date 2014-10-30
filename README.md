@@ -22,8 +22,6 @@ Simple test runner with TDD like assertion library for the browser.
 5. `> gulp`
 6. `assertiz.min.css` and `assertiz.min.js` will be placed in the `build` directory
 
-<strong>Note:</strong> Build script is written to run on Windows machines. Replace `\\` with `/` in paths to the source files if you want to run it on Linux / Mac OS machines.
-
 ## Interface
 ```html
 ﻿<!doctype html>
