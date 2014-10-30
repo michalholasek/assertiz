@@ -3,6 +3,7 @@
 
   module('assert', function () {
     var isFunction = require('utils').isFunction;
+    var isBoolean = require('utils').isBoolean;
     var assert = {};
     var fail;
 
@@ -15,6 +16,12 @@
     assert.equal = function (actual, expected) {
       if (actual !== expected) {
         fail(actual + ' is not equal to ' + expected);
+      }
+    };
+
+    assert.false = function (value) {
+      if (!isBoolean(value) || value) {
+        fail('value is not false');
       }
     };
 
@@ -34,7 +41,7 @@
     };
 
     assert.true = function (value) {
-      if (typeof value !== 'boolean' || !value) {
+      if (!isBoolean(value) || !value) {
         fail('value is not true');
       }
     };

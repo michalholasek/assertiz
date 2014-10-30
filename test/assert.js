@@ -28,6 +28,40 @@
   });
 
   suite('assert', function () {
+    test('false() - invalid input value (empty string)', function () {
+      assert.false('');
+      message = assert.error.message;
+      assert.clear();
+      assert.equal(message, 'value is not false');
+    });
+
+    test('false() - invalid input value (empty object)', function () {
+      assert.false({});
+      message = assert.error.message;
+      assert.clear();
+      assert.equal(message, 'value is not false');
+    });
+
+    test('false() - invalid input value (undefined)', function () {
+      assert.false(undefined);
+      message = assert.error.message;
+      assert.clear();
+      assert.equal(message, 'value is not false');
+    });
+
+    test('false() - value is not false', function () {
+      assert.false(true);
+      message = assert.error.message;
+      assert.clear();
+      assert.equal(message, 'value is not false');
+    });
+
+    test('false() - value is false', function () {
+      assert.false(false);
+    });
+  });
+
+  suite('assert', function () {
     test('equal() - values are not equal', function () {
       assert.equal(0, 1);
       message = assert.error.message;

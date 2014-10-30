@@ -3,6 +3,7 @@
 
   module('assertiz', function () {
     var isFunction = require('utils').isFunction;
+    var isBoolean = require('utils').isBoolean;
     var isString = require('utils').isString;
     var assert = require('assert');
     var listenerId = -1;
@@ -193,8 +194,7 @@
 
       test: function (name, fn, async) {
         // Push only valid test
-        if (!isString(name) || !isFunction(fn) ||
-           (async && typeof async !== 'boolean')) {
+        if (!isString(name) || !isFunction(fn) || (!isBoolean(async) && async)) {
           return;
         }
         
