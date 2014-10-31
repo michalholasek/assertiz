@@ -2,14 +2,46 @@
   'use strict';
 
   module('assert', function () {
+    var isPrimitive = require('utils').isPrimitive;
     var isFunction = require('utils').isFunction;
+    var objectType = require('utils').objectType;
     var isBoolean = require('utils').isBoolean;
+    var isObject = require('utils').isObject;
+    var isArray = require('utils').isArray;
     var assert = {};
     var fail;
 
     assert.clear = function () {
       if (assert.error) {
         delete assert.error;
+      }
+    };
+
+    assert.deepEqual = function (actual, expected) {
+      var callbacksA = [];
+      var callbacksB = [];
+      var valuesA = [];
+      var valuesB = [];
+      var typeA = '';
+      var typeB = '';
+
+      typeA = objectType(actual);
+      typeB = objectType(expected);
+
+      if (typeA !== typeB) {
+        fail(actual + 'is not deep equal to' + expected);
+      }
+
+      if (isPrimitive(actual) && isPrimitive(expected)) {
+        return this.equal(actual, expected);
+      }
+
+      if (typeA === 'object') {
+        // Implement for object
+      }
+
+      if (typeA === 'array') {
+        // Implement for array
       }
     };
 
