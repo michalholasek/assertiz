@@ -28,7 +28,7 @@
       
       if (typeA !== typeB) return fail(message);
 
-      innerDeepEqual(actual, expected);
+      innerDeepEqual(actual, expected, message);
     };
 
     assert.equal = function (actual, expected, message) {
@@ -40,7 +40,7 @@
     };
 
     assert.notDeepEqual = function (actual, expected, message) {
-      assert.deepEqual(actual, expected);
+      assert.deepEqual(actual, expected, message);
       if (!assert.error) fail(message);
       else delete assert.error;
     };
