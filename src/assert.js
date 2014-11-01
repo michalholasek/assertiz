@@ -3,6 +3,7 @@
 
   module('assert', function () {
     var isPrimitive = require('utils').isPrimitive;
+    var isFunction = require('utils').isFunction;
     var objectType = require('utils').objectType;
     var isBoolean = require('utils').isBoolean;
     var isNaN = require('utils').isNaN;
@@ -21,7 +22,7 @@
       var typeA = '';
       var typeB = '';
 
-      msg = 'actual is not deep equal to expected';
+      msg = 'Actual is not deep equal to expected.';
 
       typeA = objectType(actual);
       typeB = objectType(expected);
@@ -40,53 +41,39 @@
     };
 
     assert.equal = function (actual, expected) {
-      if (actual !== expected) {
-        fail(actual + ' is not equal to ' + expected);
-      }
+      if (actual !== expected) fail(actual + ' is not equal to ' + expected);
     };
 
     assert.false = function (value) {
-      if (!isBoolean(value) || value) {
-        fail('value is not false');
-      }
+      if (!isBoolean(value) || value) fail('Value is not false.');
     };
 
     assert.notDeepEqual = function (actual, expected) {
       assert.deepEqual(actual, expected);
-      if (!assert.error) {
-        fail('actual is deep equal to expected');
-      } else {
-        delete assert.error;
-      }
+      if (!assert.error) fail('Actual is deep equal to expected.'); else delete assert.error;
     };
 
     assert.notEqual = function (actual, expected) {
-      if (actual === expected) {
-        fail(actual + ' is equal to ' + expected);
-      }
+      if (actual === expected) fail(actual + ' is equal to ' + expected);
     };
 
-    assert.throws = function (fn, comparer) {
-      var isFunction = require('utils').isFunction;
+    assert.throws = function (block, comparer) {
+      var actual;
+
+      if (!isFunction(block)) return fail('Block is not a function.');
       
       try {
-        if (!isFunction(fn)) {
-          fail('fn is not a function');
-        } else {
-          fn();
-          fail('function did not throw an error');
-        }
+        block();
       } catch (err) {
-        if (isFunction(comparer) && !comparer(err)) {
-          fail('comparer function did not return true');
-        }
+        actual = err; 
       }
+
+      if (!actual) return fail('Block did not throw an error.');
+      if (isFunction(comparer) && !comparer(actual)) fail('Comparer function did not return true.');
     };
 
     assert.true = function (value) {
-      if (!isBoolean(value) || !value) {
-        fail('value is not true');
-      }
+      if (!isBoolean(value) || !value) fail('Value is not true.');
     };
 
     compareArrays = function (valuesA, valuesB) {

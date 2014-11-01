@@ -34,7 +34,7 @@
       assert.true(false);
       message = assert.error.message;
       assert.clear();
-      assert.equal(message, 'value is not true');
+      assert.equal(message, 'Value is not true.');
     });
 
     test('run() - failed asynchronous test', function (done) {
@@ -42,7 +42,7 @@
         assert.true(false);
         message = assert.error.message;
         assert.clear();
-        assert.equal(message, 'value is not true');
+        assert.equal(message, 'Value is not true.');
         done();
       }, 100);
     }, true);

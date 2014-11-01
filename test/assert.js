@@ -12,14 +12,14 @@
       assert.true('');
       message = assert.error.message;
       assert.clear();
-      assert.equal(message, 'value is not true');
+      assert.equal(message, 'Value is not true.');
     });
 
     test('true() - value is not true', function () {
       assert.true(false);
       message = assert.error.message;
       assert.clear();
-      assert.equal(message, 'value is not true');
+      assert.equal(message, 'Value is not true.');
     });
 
     test('true() - value is true', function () {
@@ -32,28 +32,28 @@
       assert.false('');
       message = assert.error.message;
       assert.clear();
-      assert.equal(message, 'value is not false');
+      assert.equal(message, 'Value is not false.');
     });
 
     test('false() - invalid input value (empty object)', function () {
       assert.false({});
       message = assert.error.message;
       assert.clear();
-      assert.equal(message, 'value is not false');
+      assert.equal(message, 'Value is not false.');
     });
 
     test('false() - invalid input value (undefined)', function () {
       assert.false(undefined);
       message = assert.error.message;
       assert.clear();
-      assert.equal(message, 'value is not false');
+      assert.equal(message, 'Value is not false.');
     });
 
     test('false() - value is not false', function () {
       assert.false(true);
       message = assert.error.message;
       assert.clear();
-      assert.equal(message, 'value is not false');
+      assert.equal(message, 'Value is not false.');
     });
 
     test('false() - value is false', function () {
@@ -131,18 +131,18 @@
   });
 
   suite('assert', function () {
-    test('throws() - input fn is not a function', function () {
+    test('throws() - input block is not a function', function () {
       assert.throws({});
       message = assert.error.message;
       assert.clear();
-      assert.equal(message, 'fn is not a function');
+      assert.equal(message, 'Block is not a function.');
     });
 
-    test('throws() - input fn does not throw an error', function () {
+    test('throws() - input block does not throw an error', function () {
       assert.throws(function () {});
       message = assert.error.message;
       assert.clear();
-      assert.equal(message, 'function did not throw an error');
+      assert.equal(message, 'Block did not throw an error.');
     });
 
     test('throws() - comparer function does not return true', function () {
@@ -150,7 +150,7 @@
       var actual;
 
       actual = function () {
-        throw new Error('actual error message');
+        throw new Error('Actual error message.');
       };
 
       expected = function () {};
@@ -158,12 +158,12 @@
       assert.throws(actual, expected);
       message = assert.error.message;
       assert.clear();
-      assert.equal(message, 'comparer function did not return true');
+      assert.equal(message, 'Comparer function did not return true.');
     });
 
     test('throws() - input fn throws an error', function () {
       assert.throws(function () {
-        throw new Error('actual error message');
+        throw new Error('Actual error message.');
       });
     });
 
@@ -172,11 +172,11 @@
       var actual;
 
       actual = function () {
-        throw new Error('expected error message');
+        throw new Error('Expected error message.');
       };
 
       expected = function (err) {
-        if (err.message === 'expected error message') {
+        if (err.message === 'Expected error message.') {
           return true;
         }
       };
