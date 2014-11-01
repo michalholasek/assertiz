@@ -99,6 +99,30 @@
   });
 
   suite('assert', function () {
+    test('deepEqual() - arrays are deep equal (1)', function () {
+      assert.deepEqual([], []);
+    });
+    test('deepEqual() - arrays are deep equal (2)', function () {
+      assert.deepEqual([1, 2, [3, 4], 5, 6], [1, 2, [3, 4], 5, 6]);
+    });
+    test('deepEqual() - arrays are deep equal (3)', function () {
+      assert.deepEqual([1, [2, [3, 4], 5], 6], [1, [2, [3, 4], 5], 6]);
+    });
+    test('deepEqual() - arrays are deep equal (4)', function () {
+      assert.deepEqual([[[NaN]]], [[[NaN]]]);
+    });
+    test('deepEqual() - arrays are deep equal (5)', function () {
+      assert.deepEqual([NaN, 0, [1, [2, [3, [4]]]]], [NaN, 0, [1, [2, [3, [4]]]]]);
+    });
+  });
+
+  suite('assert', function () {
+    test('notDeepEqual() - arrays are not deep equal (1)', function () {
+      assert.notDeepEqual([], [[]]);
+    });
+  });
+
+  suite('assert', function () {
     test('clear() - deletes assert~error property', function () {
       assert.error = new Error('assert~error property set');
       assert.clear();
