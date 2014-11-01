@@ -14,9 +14,7 @@
     var fail;
 
     assert.clear = function () {
-      if (assert.error) {
-        delete assert.error;
-      }
+      if (assert.error) delete assert.error;
     };
 
     assert.deepEqual = function (actual, expected) {
@@ -28,6 +26,10 @@
       typeA = objectType(actual);
       typeB = objectType(expected);
 
+      // E.g. var a = [], b = a;
+      if (typeA === 'array' && typeB === 'array' && actual === expected) return;
+      if (typeA === 'object' && typeB === 'object' && actual === expected) return;
+      
       if (typeA !== typeB) return fail(msg);
 
       if (isPrimitive(actual) && isPrimitive(expected)) {
