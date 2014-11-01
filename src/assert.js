@@ -7,10 +7,12 @@
     var objectType = require('utils').objectType;
     var isBoolean = require('utils').isBoolean;
     var isNaN = require('utils').isNaN;
+    var compareObjects;
     var innerDeepEqual;
     var compareArrays;
     var assert = {};
     var compareNaNs;
+    var compare;
     var fail;
 
     assert.clear = function () {
@@ -68,7 +70,7 @@
       if (!isBoolean(value) || !value) fail(message);
     };
 
-    compareArrays = function (valuesA, valuesB, message) {
+    compare = function (valuesA, valuesB, message) {
       var valA = valuesA.shift();
       var valB = valuesB.shift();
       var typeA = '';
@@ -80,13 +82,19 @@
       if (typeA !== typeB) return fail(message);  
       if (isPrimitive(valA) && !isNaN(valA) && valA === valB) return;
       if (isPrimitive(valA) && compareNaNs(valA, valB)) return;
-      if (typeA === 'array' && valA.length !== valB.length) return fail(message);
+
+      if (typeA === 'array') compareArrays(valuesA, valuesB, valA, valB, message);
+      if (typeA === 'object') compareObjects(valuesA, valuesB, valA, valB, message);
+    };
+
+    compareArrays = function (valuesA, valuesB, valA, valB, message) {
+      if (valA.length !== valB.length) return fail(message);
 
       for (var i = 0; i < valA.length; i++) {
         if (isPrimitive(valA[i]) && !isNaN(valA[i]) && valA[i] !== valB[i]) return fail(message);
         if (isPrimitive(valA[i]) && !compareNaNs(valA[i], valB[i])) return fail(message);
 
-        if (objectType(valA[i]) === 'array') {
+        if (objectType(valA[i]) === 'array' && objectType(valA[i]) === 'object') {
           valuesA.push(valA[i]);
           valuesB.push(valB[i]);
         }
@@ -95,6 +103,31 @@
 
     compareNaNs = function (valA, valB) {
       return isNaN(valA) === isNaN(valB);
+    };
+
+    compareObjects = function (valuesA, valuesB, valA, valB, message) {
+      if (valA.constructor !== valB.constructor) fail(message);
+
+      for (var prop in valA) {
+        if (valA.hasOwnProperty(prop)) {
+          
+          if (!valB.hasOwnProperty(prop)) fail(message);
+          
+          if (isPrimitive(valA[prop]) && !isNaN(valA[prop]) &&
+              valA[prop] !== valB[prop]) {
+            return fail(message);
+          }
+          
+          if (isPrimitive(valA[prop]) && !compareNaNs(valA[prop], valB[prop])) {
+            return fail(message);
+          }
+
+          if (objectType(valA[prop]) === 'array' && objectType(valA[prop]) === 'object') {
+            valuesA.push(valA[prop]);
+            valuesB.push(valB[prop]);
+          }
+        }
+      }
     };
 
     fail = function (message) {
@@ -112,15 +145,23 @@
           valuesA.push(actual[i]);
           valuesB.push(expected[i]);
         }
-
-        while (valuesA.length) {
-          if (!assert.error) compareArrays(valuesA, valuesB, message);
-          else return;
-        }
       }
 
       if (objectType(actual) === 'object') {
-        // Implement object
+        if (actual.constructor !== expected.constructor) return fail(message);
+
+        for (var prop in actual) {
+          if (actual.hasOwnProperty(prop)) {
+            if (!expected.hasOwnProperty(prop)) return fail(message);
+            valuesA.push(actual[prop]);
+            valuesB.push(expected[prop]);
+          }
+        }
+      }
+
+      while (valuesA.length) {
+        if (!assert.error) compare(valuesA, valuesB, message);
+        else return;
       }
     };
     
