@@ -6,7 +6,6 @@
     var objectType = require('utils').objectType;
     var isBoolean = require('utils').isBoolean;
     var isNaN = require('utils').isNaN;
-    var comparePrimitives;
     var innerDeepEqual;
     var compareArrays;
     var assert = {};
@@ -38,7 +37,6 @@
       innerDeepEqual(actual, expected);
     };
 
-    // TODO: Resolve NaN (in)equality
     assert.equal = function (actual, expected) {
       if (actual !== expected) {
         fail(actual + ' is not equal to ' + expected);
@@ -99,12 +97,12 @@
       typeB = objectType(valB);
 
       if (typeA !== typeB) return fail(msg);  
-      if (isPrimitive(valA) && comparePrimitives(valA, valB)) return;
+      if (isPrimitive(valA) && !isNaN(valA) && valA === valB) return;
       if (isPrimitive(valA) && compareNaNs(valA, valB)) return;
       if (typeA === 'array' && valA.length !== valB.length) return fail(msg);
 
       for (var i = 0; i < valA.length; i++) {
-        if (isPrimitive(valA[i]) && !isNaN(valA[i]) && !comparePrimitives(valA[i], valB[i])) return fail(msg);
+        if (isPrimitive(valA[i]) && !isNaN(valA[i]) && valA[i] !== valB[i]) return fail(msg);
         if (isPrimitive(valA[i]) && !compareNaNs(valA[i], valB[i])) return fail(msg);
 
         if (objectType(valA[i]) === 'array') {
@@ -116,10 +114,6 @@
 
     compareNaNs = function (valA, valB) {
       return isNaN(valA) === isNaN(valB);
-    };
-
-    comparePrimitives = function (valA, valB) {
-      return !isNaN(valA) && valA === valB;
     };
 
     fail = function (message) {
