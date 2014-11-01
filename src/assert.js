@@ -11,56 +11,48 @@
     var compareArrays;
     var assert = {};
     var compareNaNs;
-    var msg = '';
     var fail;
 
     assert.clear = function () {
       if (assert.error) delete assert.error;
     };
 
-    assert.deepEqual = function (actual, expected) {
+    assert.deepEqual = function (actual, expected, message) {
       var typeA = '';
       var typeB = '';
 
-      msg = 'Actual is not deep equal to expected.';
+      if (actual === expected) return;
 
       typeA = objectType(actual);
       typeB = objectType(expected);
-
-      // E.g. var a = [], b = a;
-      if (typeA === 'array' && typeB === 'array' && actual === expected) return;
-      if (typeA === 'object' && typeB === 'object' && actual === expected) return;
       
-      if (typeA !== typeB) return fail(msg);
-
-      if (isPrimitive(actual) && isPrimitive(expected)) {
-        return assert.equal(actual, expected);
-      }
+      if (typeA !== typeB) return fail(message);
 
       innerDeepEqual(actual, expected);
     };
 
-    assert.equal = function (actual, expected) {
-      if (actual !== expected) fail(actual + ' is not equal to ' + expected);
+    assert.equal = function (actual, expected, message) {
+      if (actual !== expected) fail(message);
     };
 
-    assert.false = function (value) {
-      if (!isBoolean(value) || value) fail('Value is not false.');
+    assert.false = function (value, message) {
+      if (!isBoolean(value) || value) fail(message);
     };
 
-    assert.notDeepEqual = function (actual, expected) {
+    assert.notDeepEqual = function (actual, expected, message) {
       assert.deepEqual(actual, expected);
-      if (!assert.error) fail('Actual is deep equal to expected.'); else delete assert.error;
+      if (!assert.error) fail(message);
+      else delete assert.error;
     };
 
-    assert.notEqual = function (actual, expected) {
-      if (actual === expected) fail(actual + ' is equal to ' + expected);
+    assert.notEqual = function (actual, expected, message) {
+      if (actual === expected) fail(message);
     };
 
-    assert.throws = function (block, comparer) {
+    assert.throws = function (block, comparer, message) {
       var actual;
 
-      if (!isFunction(block)) return fail('Block is not a function.');
+      if (!isFunction(block)) return fail(message);
       
       try {
         block();
@@ -68,15 +60,15 @@
         actual = err; 
       }
 
-      if (!actual) return fail('Block did not throw an error.');
-      if (isFunction(comparer) && !comparer(actual)) fail('Comparer function did not return true.');
+      if (!actual) return fail(message);
+      if (isFunction(comparer) && !comparer(actual)) fail(message);
     };
 
-    assert.true = function (value) {
-      if (!isBoolean(value) || !value) fail('Value is not true.');
+    assert.true = function (value, message) {
+      if (!isBoolean(value) || !value) fail(message);
     };
 
-    compareArrays = function (valuesA, valuesB) {
+    compareArrays = function (valuesA, valuesB, message) {
       var valA = valuesA.shift();
       var valB = valuesB.shift();
       var typeA = '';
@@ -85,14 +77,14 @@
       typeA = objectType(valA);
       typeB = objectType(valB);
 
-      if (typeA !== typeB) return fail(msg);  
+      if (typeA !== typeB) return fail(message);  
       if (isPrimitive(valA) && !isNaN(valA) && valA === valB) return;
       if (isPrimitive(valA) && compareNaNs(valA, valB)) return;
-      if (typeA === 'array' && valA.length !== valB.length) return fail(msg);
+      if (typeA === 'array' && valA.length !== valB.length) return fail(message);
 
       for (var i = 0; i < valA.length; i++) {
-        if (isPrimitive(valA[i]) && !isNaN(valA[i]) && valA[i] !== valB[i]) return fail(msg);
-        if (isPrimitive(valA[i]) && !compareNaNs(valA[i], valB[i])) return fail(msg);
+        if (isPrimitive(valA[i]) && !isNaN(valA[i]) && valA[i] !== valB[i]) return fail(message);
+        if (isPrimitive(valA[i]) && !compareNaNs(valA[i], valB[i])) return fail(message);
 
         if (objectType(valA[i]) === 'array') {
           valuesA.push(valA[i]);
@@ -109,12 +101,12 @@
       assert.error = new Error(message);
     };
 
-    innerDeepEqual = function (actual, expected) {
+    innerDeepEqual = function (actual, expected, message) {
       var valuesA = [];
       var valuesB = [];
 
       if (objectType(actual) === 'array') {
-        if (actual.length !== expected.length) return fail(msg);
+        if (actual.length !== expected.length) return fail(message);
 
         for (var i = 0; i < actual.length; i++) {
           valuesA.push(actual[i]);
@@ -122,8 +114,13 @@
         }
 
         while (valuesA.length) {
-          if (!assert.error) compareArrays(valuesA, valuesB); else break;
+          if (!assert.error) compareArrays(valuesA, valuesB, message);
+          else return;
         }
+      }
+
+      if (objectType(actual) === 'object') {
+        // Implement object
       }
     };
     
