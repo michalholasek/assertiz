@@ -83,7 +83,7 @@
       if (isPrimitive(valA) && !isNaN(valA) && valA === valB) return;
       if (isPrimitive(valA) && compareNaNs(valA, valB)) return;
 
-      if (typeA === 'array') compareArrays(valuesA, valuesB, valA, valB, message);
+      if (typeA === 'array') return compareArrays(valuesA, valuesB, valA, valB, message);
       if (typeA === 'object') compareObjects(valuesA, valuesB, valA, valB, message);
     };
 

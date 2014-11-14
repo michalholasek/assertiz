@@ -134,11 +134,81 @@
       if (assert.error) assert.clear();
       else assert.true(false, 'Given arrays are not deep equal.');
     });
+
+    test('deepEqual() - objects are deep equal (1)', function () {
+      var expected = { prop1: 'prop1', prop2: 2, prop3: undefined };
+      var actual = { prop1: 'prop1', prop2: 2, prop3: undefined };
+      assert.deepEqual(actual, expected, 'Given objects are not equal.');
+    });
+
+    test('deepEqual() - objects are deep equal (2)', function () {
+      var expected = { prop1: { prop1: { prop1: 'Value' } } };
+      var actual = { prop1: { prop1: { prop1: 'Value' } } };
+      assert.deepEqual(actual, expected, 'Given objects are not equal.');
+    });
+
+    test('deepEqual() - objects are deep equal (3)', function () {
+      var expected = { prop1: { prop1: '' }, prop2: { prop1: 1 } };
+      var actual = { prop1: { prop1: '' }, prop2: { prop1: 1 } };
+      assert.deepEqual(actual, expected, 'Given objects are not equal.');
+    });
+
+    test('deepEqual() - objects are deep equal (4)', function () {
+      var expected = { prop1: { prop1: [1, 2, 3] }, prop2: { prop1: 1 } };
+      var actual = { prop1: { prop1: [1, 2, 3] }, prop2: { prop1: 1 } };
+      assert.deepEqual(actual, expected, 'Given objects are not equal.');
+    });
+
+    test('deepEqual() - objects are deep equal (5)', function () {
+      var expected = { prop1: { prop1: [NaN] }, prop2: { prop1: 1 } };
+      var actual = { prop1: { prop1: [NaN] }, prop2: { prop1: 1 } };
+      assert.deepEqual(actual, expected, 'Given objects are not equal.');
+    });
   });
 
   suite('assert', function () {
-    test('notDeepEqual() - arrays are not deep equal (1)', function () {
+    test('notDeepEqual() - arrays are not deep equal', function () {
       assert.notDeepEqual([], [[]], '[] and [[]] are not deep equal.');
+    });
+
+    test('notDeepEqual() - objects are not deep equal (1)', function () {
+      assert.notDeepEqual([], {}, '[] and {} are not deep equal.');
+    });
+
+    test('notDeepEqual() - objects are not deep equal (2)', function () {
+      var MyClass = function () {};
+      var expected = new MyClass();
+      assert.notDeepEqual({}, expected, '[] and {} are not deep equal.');
+    });
+
+    test('notDeepEqual() - objects are not deep equal (3)', function () {
+      var actual = { prop1: 1 };
+      var expected = { prop2: 1 };
+      assert.notDeepEqual(actual, expected, 'Given objects are not deep equal.');
+    });
+
+    test('notDeepEqual() - objects are not deep equal (4)', function () {
+      var actual = { prop1: 1 };
+      var expected = { prop1: '' };
+      assert.notDeepEqual(actual, expected, 'Given objects are not deep equal.');
+    });
+
+    test('notDeepEqual() - objects are not deep equal (5)', function () {
+      var actual = { prop1: [1, 2, 3] };
+      var expected = { prop1: [1, 2] };
+      assert.notDeepEqual(actual, expected, 'Given objects are not deep equal.');
+    });
+
+    test('notDeepEqual() - objects are not deep equal (6)', function () {
+      var actual = { prop1: [1, 2, 3] };
+      var expected = { prop1: [1, 2, 4] };
+      assert.notDeepEqual(actual, expected, 'Given objects are not deep equal.');
+    });
+
+    test('notDeepEqual() - objects are not deep equal (7)', function () {
+      var actual = { prop1: { prop1: '' } };
+      var expected = { prop1: { prop1: 'Value' } };
+      assert.notDeepEqual(actual, expected, 'Given objects are not deep equal.');
     });
   });
 
