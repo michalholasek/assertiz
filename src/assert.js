@@ -9,7 +9,9 @@
     var isNaN = require('utils').isNaN;
     var compareObjects;
     var innerDeepEqual;
+    var compareRegExps;
     var compareArrays;
+    var compareDates;
     var assert = {};
     var compareNaNs;
     var compare;
@@ -76,6 +78,9 @@
       var typeA = '';
       var typeB = '';
 
+      // There is no need to test further if values are equal
+      if (valA === valB) return;
+
       typeA = objectType(valA);
       typeB = objectType(valB);
 
@@ -83,8 +88,10 @@
       if (isPrimitive(valA) && !isNaN(valA) && valA === valB) return;
       if (isPrimitive(valA) && compareNaNs(valA, valB)) return;
 
+      if (typeA === 'object') return compareObjects(valuesA, valuesB, valA, valB, message);
       if (typeA === 'array') return compareArrays(valuesA, valuesB, valA, valB, message);
-      if (typeA === 'object') compareObjects(valuesA, valuesB, valA, valB, message);
+      if (typeA === 'regexp') return compareRegExps(valA, valB, message);
+      if (typeA === 'date') compareDates(valA, valB, message); 
     };
 
     compareArrays = function (valuesA, valuesB, valA, valB, message) {
@@ -93,12 +100,18 @@
       for (var i = 0; i < valA.length; i++) {
         if (isPrimitive(valA[i]) && !isNaN(valA[i]) && valA[i] !== valB[i]) return fail(message);
         if (isPrimitive(valA[i]) && !compareNaNs(valA[i], valB[i])) return fail(message);
-
+        
+        if (objectType(valA[i]) === 'regexp') compareRegExps(valA[i], valA[i], message);
+        if (objectType(valA[i]) === 'date') compareDates(valA[i], valB[i], message);
         if (objectType(valA[i]) === 'array' || objectType(valA[i]) === 'object') {
           valuesA.push(valA[i]);
           valuesB.push(valB[i]);
         }
       }
+    };
+
+    compareDates = function (valA, valB, message) {
+      if (valA.valueOf() !== valB.valueOf()) fail(message);
     };
 
     compareNaNs = function (valA, valB) {
@@ -113,13 +126,22 @@
           if (!valB.hasOwnProperty(prop)) return fail(message); 
           if (isPrimitive(valA[prop]) && !isNaN(valA[prop]) && valA[prop] !== valB[prop]) return fail(message);
           if (isPrimitive(valA[prop]) && !compareNaNs(valA[prop], valB[prop])) return fail(message);
-
+          
+          if (objectType(valA[prop]) === 'regexp') compareRegExps(valA[prop], valB[prop], message);
+          if (objectType(valA[prop]) === 'date') compareDates(valA[prop], valB[prop], message);
           if (objectType(valA[prop]) === 'array' || objectType(valA[prop]) === 'object') {
             valuesA.push(valA[prop]);
             valuesB.push(valB[prop]);
           }
         }
       }
+    };
+
+    compareRegExps = function (valA, valB, message) {
+      if (valA.source !== valB.source ||
+          valA.ignoreCase !== valB.ignoreCase ||
+          valA.multiline !== valB.multiline ||
+          valA.global !== valB.global) fail(message);
     };
 
     fail = function (message) {
