@@ -21,8 +21,8 @@
     };
 
     assert.deepEqual = function (actual, expected, message) {
-      var typeA = '';
-      var typeB = '';
+      var typeA;
+      var typeB;
 
       if (actual === expected) return;
 
