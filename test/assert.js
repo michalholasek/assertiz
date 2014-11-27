@@ -188,6 +188,23 @@
       var actual = { prop1: { prop1: [new Date(2014, 11, 15)] }, prop2: { prop1: 1 } };
       assert.deepEqual(actual, expected, 'Given objects are not deep equal.');
     });
+
+    test('deepEqual() - objects with cyclic references', function() {
+      var createCyclicReference = function (name, place) {
+          var customer = { name: name };
+          var address = { name: place };
+
+          customer.address = address;
+          address.customer = customer;
+
+          return customer;
+        },
+
+        actual = createCyclicReference('Harry Potter', 'Diagon Alley'),
+        expected = createCyclicReference('Harry Potter', 'Diagon Alley');
+
+      assert.deepEqual(actual, expected, 'Given objects are not deep equal.');
+    });
   });
 
   suite('assert', function () {
