@@ -74,11 +74,16 @@
     compare = function (valuesA, valuesB, message) {
       var valA = valuesA.shift();
       var valB = valuesB.shift();
-      var typeA = '';
-      var typeB = '';
+      var typeA;
+      var typeB;
 
       // There is no need to test further if values are equal
       if (valA === valB) return;
+
+      // Avoid circular references
+      for (var i = 0; i < innerDeepEqual.compared.length; i++) {
+        if (innerDeepEqual.compared[i] === valA) return;
+      }
 
       typeA = objectType(valA);
       typeB = objectType(valB);
@@ -130,6 +135,8 @@
           }
         }
       }
+
+      innerDeepEqual.compared.push(valA);
     };
 
     compareRegExps = function (valA, valB, message) {
@@ -146,6 +153,8 @@
     innerDeepEqual = function (actual, expected, message) {
       var valuesA = [];
       var valuesB = [];
+
+      innerDeepEqual.compared = [];
 
       if (objectType(actual) === 'array') {
         if (actual.length !== expected.length) return fail(message);
@@ -166,6 +175,8 @@
             valuesB.push(expected[prop]);
           }
         }
+
+        innerDeepEqual.compared.push(actual);
       }
 
       while (valuesA.length) {

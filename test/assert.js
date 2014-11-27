@@ -190,18 +190,21 @@
     });
 
     test('deepEqual() - objects with cyclic references', function() {
+      var expected;
+      var actual;
+
       var createCyclicReference = function (name, place) {
-          var customer = { name: name };
-          var address = { name: place };
+        var customer = { name: name };
+        var address = { name: place };
 
-          customer.address = address;
-          address.customer = customer;
+        customer.address = address;
+        address.customer = customer;
 
-          return customer;
-        },
+        return customer;
+      };
 
-        actual = createCyclicReference('Harry Potter', 'Diagon Alley'),
-        expected = createCyclicReference('Harry Potter', 'Diagon Alley');
+      actual = createCyclicReference('Harry Potter', 'Diagon Alley');
+      expected = createCyclicReference('Harry Potter', 'Diagon Alley');
 
       assert.deepEqual(actual, expected, 'Given objects are not deep equal.');
     });
