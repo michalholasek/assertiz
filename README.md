@@ -10,10 +10,6 @@ Simple test runner with TDD like assertion library for the browser.
 - TDD like interface with only few assertions
 - Reports test durations
 
-## Planned Features
-- More assertions (deepEqual, notDeepEqual)
-- nodejs support
-
 ## Build
 1. Make sure you have [node.js](http://nodejs.org/) installed
 2. `> cd path/to/assertiz`
