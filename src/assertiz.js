@@ -61,9 +61,7 @@
         test.run(onFinished, onError);
       }
 
-      if (!queue.length) {
-        emit('run-finished');
-      }
+      if (!queue.length) emit('run-finished');
     };
 
     //----------------------------------------------------------------------
@@ -78,11 +76,8 @@
     };
 
     Test.prototype.run = function (onFinished, onError) {
-      if (this.async) {
-        runAsync(this, onFinished, onError);
-      } else {
-        runSync(this, onFinished, onError);
-      }
+      if (this.async) runAsync(this, onFinished, onError);
+      else runSync(this, onFinished, onError);
     };
 
     runAsync = function (test, onFinished, onError) {
@@ -91,16 +86,16 @@
       var timer;
 
       timer = setTimeout(function canceled() {
-          test.duration = Date.now() - start;
-          test.error = new Error('test timed out');
-          test.canceled = true;
-          test.passed = false;
-          
-          onError(test);
-        }, timeout);
+        test.duration = Date.now() - start;
+        test.error = new Error('test timed out');
+        test.canceled = true;
+        test.passed = false;
+        
+        onError(test);
+      }, timeout);
 
       test.fn(function done() {
-        if (test.canceled) { return; }
+        if (test.canceled) return;
 
         clearTimeout(timer);
 
@@ -108,15 +103,12 @@
 
         if (!assert.error) {
           test.passed = true;
-
           onFinished(test);
-
         } else {
           test.passed = false;
           test.error = assert.error;
 
           assert.clear();
-
           onError(test);
         }
       });
@@ -169,9 +161,7 @@
 
         if (!isString(event) || !isFunction(fn)) return;
 
-        if (!listeners[event]) {
-          listeners[event] = [];
-        }
+        if (!listeners[event]) listeners[event] = [];
 
         token = (++listenerId).toString();
         listeners[event].push({
@@ -194,9 +184,7 @@
 
       test: function (name, fn, async) {
         // Push only valid test
-        if (!isString(name) || !isFunction(fn) || (!isBoolean(async) && async)) {
-          return;
-        }
+        if (!isString(name) || !isFunction(fn) || (!isBoolean(async) && async)) return;
         
         addTest(new Test(suite, name, fn, async));
       }
