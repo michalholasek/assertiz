@@ -23,8 +23,8 @@ Simple test runner with TDD like assertion library for the browser.
 ﻿<!doctype html>
 <html>
   <head>
-    <title>assertiz</title>
     <meta charset="utf-8">
+    <title>assertiz</title>
   </head>
   <body>
     <link rel="stylesheet" href="assertiz.min.css">
