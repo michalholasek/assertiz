@@ -16,6 +16,15 @@
     var compare;
     var fail;
 
+    var alreadyDecomposed;
+    var decompose;
+    var flatten;
+    var isValue;
+
+    //----------------------------------------------------------------------
+    // Public Interface
+    //----------------------------------------------------------------------
+
     assert.clear = function () {
       if (assert.error) delete assert.error;
     };
@@ -69,6 +78,17 @@
 
     assert.true = function (value, message) {
       if (!isBoolean(value) || !value) fail(message);
+    };
+
+    //----------------------------------------------------------------------
+    // Helpers
+    //----------------------------------------------------------------------
+
+    alreadyDecomposed = function (obj) {
+      for (var i = 0; i < flatten.decomposed.length; i++) {
+        if (flatten.decomposed[i] === obj) return true;
+      }
+      return false;
     };
 
     compare = function (valuesA, valuesB, message) {
@@ -140,17 +160,97 @@
     };
 
     compareRegExps = function (valA, valB, message) {
-      if (valA.source !== valB.source ||
-          valA.ignoreCase !== valB.ignoreCase ||
+      if (valA.ignoreCase !== valB.ignoreCase ||
           valA.multiline !== valB.multiline ||
+          valA.source !== valB.source ||
           valA.global !== valB.global) fail(message);
+    };
+
+    decompose = function (toDecompose, toCompare) {
+      var toDecomposeType;
+      var nestedType;
+      
+      // Objects / arrays that will be decomposed in next loop
+      var toDecomposeNext = [];
+      
+      // Represents nested object, eg. [{ prop1: {/* nested */} }],
+      // or item in an array
+      var nested;
+      
+      toDecomposeType = objectType(toDecompose);
+      if (toDecomposeType === 'object') {
+
+        // We want to be able to compare 'origin' of the object that
+        // is being decomposed, hence the constructor is considered
+        // a 'value' here
+        toCompare.push(toDecompose.constructor);
+
+        // Store references of already decomposed objects so we don't end
+        // up decomposing the same object twice and to avoid circular
+        // references
+        flatten.decomposed.push(toDecompose);
+      }
+
+      for (var property in toDecompose) {
+        if (toDecompose.hasOwnProperty(property) && !alreadyDecomposed(toDecompose[property])) {
+          
+          nested = toDecompose[property];
+          nestedType = objectType(nested);
+
+          // Names of the object's properties are also compared
+          if (toDecomposeType !== 'array' && nestedType === 'object') {
+            toCompare.push(property); 
+          }
+
+          if (isValue(nested)) toCompare.push(nested);
+          
+          else {
+            if (nestedType === 'object') toCompare.push(nested.constructor);
+
+            flatten.decomposed.push(nested);
+            
+            for (var prop in nested) {
+              if (nested.hasOwnProperty(prop) && !alreadyDecomposed(nested[prop])) {
+                if (nestedType === 'object') toCompare.push(prop);
+
+                if (isValue(nested[prop])) toCompare.push(nested[prop]);      
+                else toDecomposeNext.push(nested[prop]);
+              }  
+            }
+          }
+        }
+      }
+
+      return toDecomposeNext;
     };
 
     fail = function (message) {
       assert.error = new Error(message);
     };
 
+    flatten = function (obj) {
+      // debugger;
+
+      var toDecompose = [];
+      var toCompare = [];
+
+      flatten.decomposed = [];
+
+      // We need to decompose original object first and then carry on
+      // with inner values / objects / arrays
+      toDecompose = decompose(obj, toCompare);
+      
+      while (toDecompose.length) {
+        toDecompose = decompose(toDecompose, toCompare);
+      }
+
+      return toCompare;
+    };
+
     innerDeepEqual = function (actual, expected, message) {
+      var _valuesA = flatten(actual);
+      var _valuesB = flatten(expected);
+
       var valuesA = [];
       var valuesB = [];
 
@@ -183,6 +283,16 @@
         if (!assert.error) compare(valuesA, valuesB, message);
         else return;
       }
+    };
+
+    isValue = function (value) {
+      var type = objectType(value);
+
+      return type === 'function' ||
+             isPrimitive(value) ||
+             type === 'regexp' ||
+             type === 'date' ||
+             isNaN(value);
     };
     
     module.exports = assert;
