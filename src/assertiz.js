@@ -76,17 +76,31 @@
     };
 
     Test.prototype.run = function (onFinished, onError) {
-      if (this.async) runAsync(this, onFinished, onError);
-      else runSync(this, onFinished, onError);
+      this.start = Date.now();
+      
+      try {
+
+        if (this.async) runAsync(this, onFinished, onError);
+        else runSync(this, onFinished, onError);
+
+      } catch (err) {
+        
+        this.duration = Date.now() - this.start;
+        this.passed = false;
+        this.error = err;
+
+        delete this.start;
+
+        onError(this);
+      }
     };
 
     runAsync = function (test, onFinished, onError) {
-      var start = Date.now();
       var timeout = 3000;
       var timer;
 
       timer = setTimeout(function canceled() {
-        test.duration = Date.now() - start;
+        test.duration = Date.now() - test.start;
         test.error = new Error('test timed out');
         test.canceled = true;
         test.passed = false;
@@ -99,7 +113,8 @@
 
         clearTimeout(timer);
 
-        test.duration = Date.now() - start;
+        test.duration = Date.now() - test.start;
+        delete test.start;
 
         if (!assert.error) {
           test.passed = true;
@@ -115,10 +130,9 @@
     };
 
     runSync = function (test, onFinished, onError) {
-      var start = Date.now();
-
       test.fn();
-      test.duration = Date.now() - start;
+      test.duration = Date.now() - test.start;
+      delete test.start;
 
       if (!assert.error) {
         test.passed = true;
