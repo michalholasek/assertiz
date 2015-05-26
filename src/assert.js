@@ -3,6 +3,7 @@
 
   module('assert', function () {
     var isPrimitive = require('utils').isPrimitive;
+    var isUndefined = require('utils').isUndefined;
     var isFunction = require('utils').isFunction;
     var objectType = require('utils').objectType;
     var isBoolean = require('utils').isBoolean;
@@ -95,6 +96,8 @@
     decompose = function decompose(toDecompose, toCompare) {
       var toDecomposeType = objectType(toDecompose);
 
+      if (isUndefined(decompose.decomposed)) decompose.decomposed = [];
+
       if (toDecomposeType === 'object') {
 
         // We want to be able to compare 'origin' of the object that
@@ -135,8 +138,6 @@
 
     flatten = function (obj) {
       var toCompare = [];
-
-      decompose.decomposed = [];
       
       decompose(obj, toCompare);
 
