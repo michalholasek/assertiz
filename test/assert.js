@@ -208,6 +208,12 @@
 
       assert.deepEqual(actual, expected, 'Given objects are not deep equal.');
     });
+
+    test('deepEqual() - objects with differently ordered properties', function () {
+      var expected = { prop1: { prop1: [new Date(2014, 11, 15)] }, prop2: { prop1: 1 } };
+      var actual = { prop2: { prop1: 1 }, prop1: { prop1: [new Date(2014, 11, 15)] } };
+      assert.deepEqual(actual, expected, 'Given objects are not deep equal.');
+    });
   });
 
   suite('assert', function () {

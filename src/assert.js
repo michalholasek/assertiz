@@ -145,8 +145,13 @@
     };
 
     innerDeepEqual = function (actual, expected, message) {
-      var valuesA = flatten(actual);
-      var valuesB = flatten(expected);
+
+      // Sort both arrays with values to ensure that deeply equal
+      // objects with differently ordered properties are not
+      // marked as not deeply equal
+      var valuesA = flatten(actual).sort();
+      var valuesB = flatten(expected).sort();
+      
       var typeA;
       var typeB;
       var valA;
